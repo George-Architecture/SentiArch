@@ -111,3 +111,6 @@ temp/
 # Agent/tooling runtime logs (may capture request bodies + API keys)
 .manus-logs/
 .claude/
+
+# Local scenario store (saved by the local server's /api/scenarios route)
+data/

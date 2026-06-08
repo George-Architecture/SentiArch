@@ -151,14 +151,12 @@ function vitePluginManusDebugCollector(): Plugin {
 }
 
 /**
- * Dev-only mirror of `api/llm.ts` (the Vercel function). In production
- * `/api/llm` is served by Vercel's runtime; in `vite dev` it would 404.
- * This middleware proxies POST /api/llm → DeepSeek / OpenAI with the key
- * read from .env.local (DEEPSEEK_API_KEY / OPENAI_API_KEY), so a local
- * dev session can score Layer-2 + Layer-3 just like the deployed site.
- *
- * Keep the request shape, header set, and error semantics IDENTICAL to
- * api/llm.ts so prod ↔ dev parity is preserved.
+ * Dev-only mirror of the production `/api/llm` route (see server/index.ts).
+ * In `vite dev` there's no Express server, so this middleware proxies
+ * POST /api/llm → DeepSeek / OpenAI itself. BYOK: it uses the caller's
+ * x-llm-key header, falling back to DEEPSEEK_API_KEY / OPENAI_API_KEY from
+ * .env.local. Keep the request shape, header set, and error semantics in
+ * sync with server/index.ts so dev ↔ `pnpm start` parity is preserved.
  */
 function vitePluginLLMProxyDev(): Plugin {
   const PROVIDERS = {
@@ -200,12 +198,15 @@ function vitePluginLLMProxyDev(): Plugin {
         }
         const provider = rawProvider as ProviderName;
         const cfg = PROVIDERS[provider];
-        const apiKey = env[cfg.keyEnv] || process.env[cfg.keyEnv];
+        // BYOK: prefer the visitor's own key (x-llm-key header); fall back to
+        // .env.local / shell env for local-dev convenience.
+        const clientKey = (req.headers["x-llm-key"] as string | undefined)?.trim();
+        const apiKey = clientKey || env[cfg.keyEnv] || process.env[cfg.keyEnv];
         if (!apiKey) {
-          res.statusCode = 500;
+          res.statusCode = 401;
           res.setHeader("Content-Type", "application/json");
           res.end(JSON.stringify({
-            error: `Dev proxy missing ${cfg.keyEnv}. Add it to .env.local at the project root, then restart \`vite dev\`.`,
+            error: `No ${provider} API key. Enter your own key on the Settings page, or add ${cfg.keyEnv} to .env.local and restart vite.`,
           }));
           return;
         }

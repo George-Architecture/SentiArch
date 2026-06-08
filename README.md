@@ -13,8 +13,7 @@ the second of which is simulated by an LLM grounded in the first.
 
 > HKU Master of Architecture thesis · research prototype · MIT-licensed
 
-<!-- TODO: replace with your Vercel URL once deployed -->
-**▸ [Live demo](#)  ·  [2-min walkthrough video](#)**
+**▸ Runs locally on your own machine — [two commands](#run-it-locally)  ·  [2-min walkthrough video](#)**
 
 ![SentiArch — 25 simulated occupants placed across a mental-health-centre floor plan](docs/hero.png)
 
@@ -89,30 +88,38 @@ On top of the calculation sit **three LLM layers**:
 ## Tech stack
 
 React 19 · TypeScript · Three.js / React Three Fiber · @xyflow/react ·
-Tailwind · Vite · Express · deployed on Vercel.
+Tailwind · Vite · Express. **Runs entirely on your own machine — no cloud,
+no account, no hosting required.** The bundled Express server
+([`server/index.ts`](server/index.ts)) serves the built client and the two
+API routes the app uses.
 
 The floor-plan, stress heatmap, and comfort scores are computed entirely from
 the engine (PMV/PPD + rules) and need **no API key**. Only the LLM layers
 (felt-dimension scoring + narration) call a model, and they use **BYOK — bring
 your own key**: enter a **DeepSeek** or **OpenAI** key on the Settings page (it
-is stored only in your browser and forwarded via the [`api/llm.ts`](api/llm.ts)
-proxy with each of your own requests), or run a local **Ollama** for free. The
-hosted demo ships **no key**, so the host is never billed for visitors' usage.
+is stored only in your browser and forwarded via the local
+[`/api/llm`](server/index.ts) proxy with each of your own requests), or run a
+local **Ollama** for free. Nothing ships with a key, so you are never billed
+for anyone else's usage.
 
 ## Run it locally
 
 ```bash
 pnpm install
-pnpm dev
+pnpm build
+pnpm start         # → http://localhost:3000
 ```
 
-Then open the app → **Open Prototype** to run the multi-agent simulator, or the
-**Mental Health Centre Demo** to drag 25 agents onto a floor plan for live,
-engine-grounded readings. The heatmap and comfort scores work immediately with
-no key; for the LLM narration, set a key (or Ollama URL) on the **Settings**
-page. For local dev you can instead drop a `DEEPSEEK_API_KEY` / `OPENAI_API_KEY`
-into `.env.local` (copy `.env.local.example`) and the proxy will use it as a
-fallback.
+That's the whole app, served from your own computer. Open the page →
+**Open Prototype** for the multi-agent simulator, or the **Mental Health
+Centre Demo** to drag 25 agents onto a floor plan for live, engine-grounded
+readings. The heatmap and comfort scores work immediately with no key; for the
+LLM narration, set a key (or Ollama URL) on the **Settings** page — or drop a
+`DEEPSEEK_API_KEY` / `OPENAI_API_KEY` into `.env.local` (copy
+`.env.local.example`) and the server uses it as a fallback.
+
+For development with hot-reload, use `pnpm dev` instead (same `/api/llm`
+proxy; scenario save/load needs the full `pnpm start` server).
 
 ---
 
