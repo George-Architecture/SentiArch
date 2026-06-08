@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SentiArch — Mental Health Centre Demo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Geist:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- vendored locally so the demo runs without conference wifi -->
+  <script src="vendor/react.development.js"></script>
+  <script src="vendor/react-dom.development.js"></script>
+  <script src="vendor/babel.min.js"></script>
+
+  <!-- maps window.claude.complete() onto a local Ollama server -->
+  <script src="claude-ollama-shim.js"></script>
+
+  <!-- SentiArch quantitative engine + hard-fixed mental-health-centre data -->
+  <script src="rpgarchitecture-engine.js"></script>
+  <script src="rpgarchitecture-personas.js"></script>
+  <script src="rpgarchitecture-site.js"></script>
+  <script src="rpgarchitecture-geometry.js"></script>
+  <script src="rpgarchitecture-layout.js"></script>
+  <script src="rpgarchitecture-calib.js"></script>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel" src="agents.jsx"></script>
+  <script type="text/babel" src="zones.jsx"></script>
+  <script type="text/babel" src="app.jsx"></script>
+  <!-- hidden zone/geometry tracer · open with ?author=1 -->
+  <script type="text/babel" src="author.jsx"></script>
+</body>
+</html>
