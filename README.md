@@ -13,7 +13,7 @@ the second of which is simulated by an LLM grounded in the first.
 
 > HKU Master of Architecture thesis · research prototype · MIT-licensed
 
-**▸ Runs locally on your own machine — [two commands](#run-it-locally)  ·  [2-min walkthrough video](#)**
+**▸ Runs locally on your own machine — see [Run it locally](#run-it-locally).**
 
 ![SentiArch — 25 simulated occupants placed across a mental-health-centre floor plan](docs/hero.png)
 
