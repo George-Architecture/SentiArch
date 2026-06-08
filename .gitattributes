@@ -1,0 +1,3 @@
+# Keep Windows batch scripts CRLF so cmd.exe runs them reliably.
+*.cmd text eol=crlf
+*.bat text eol=crlf

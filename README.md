@@ -110,6 +110,9 @@ pnpm build
 pnpm start         # → http://localhost:3000
 ```
 
+**Windows shortcut:** just double-click [`start.cmd`](start.cmd) — it installs
+on first run, builds if needed, starts the server, and opens your browser.
+
 That's the whole app, served from your own computer. Open the page →
 **Open Prototype** for the multi-agent simulator, or the **Mental Health
 Centre Demo** to drag 25 agents onto a floor plan for live, engine-grounded
